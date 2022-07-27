@@ -98,7 +98,7 @@ public class Project implements ServicesRule {
 
 	    mav.addObject("sendlist",this.sendListInfo(this.session.selectList("getSendEmailList", pro)));
 		// 2번박스 그외 초대가능한 새로운 멤버리스트
-		
+
 		// 3번박스 -> newProject.jsp에서 moveDiv참조 여기선x
 		mav.setViewName("memberMgr");
 	}
@@ -118,6 +118,7 @@ public class Project implements ServicesRule {
 				sb.append("<div name='seList' className='box multi' value='"+ mb.getPmbCode() +":"+mb.getPmbEmail()+"'>");
 				sb.append("<span class='small' name='smailList'>"+ mb.getPmbClassName() +"</span><br/>");
 			    sb.append("<span class='general'>"+ mb.getPmbName() +"["+mb.getPmbLevelName() +"]</span>");
+			    // if~~ ac상태면 놔두고 st상태에서 인증만료가되면 메일재전송 버튼 만들어서 메일보내기 인증만료 전이면 그냥 st로 보이게
 				sb.append("</div>");
 			    idx ++;
 				}
@@ -127,11 +128,16 @@ public class Project implements ServicesRule {
 				e.printStackTrace();
 			}
 			
+			
 				//sb.append("<div name='seList' className='box multi' value='"+ list.get(idx).getPmbCode() +":"+list.get(idx).getPmbEmail()+"'>");
 				//sb.append("<span class='small' name='smailList'>"+ list.get(idx).getPmbClassName() +"</span><br/>");
 				//sb.append("<span class='general'>"+ list.get(idx).getPmbName() +"["+list.get(idx).getPmbLevelName() +"]</span>");
 			
+			//여기에서 2번리스트 만들어서 보낼수 있지않을까
+			//아니면 전체 멤버리스트하고 흠,,.,.거르는걸모르겠네
 		}
+		
+		
 		System.out.println(sb);
 		return sb.toString();
 	}
