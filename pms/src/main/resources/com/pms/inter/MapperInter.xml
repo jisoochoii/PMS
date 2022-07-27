@@ -177,5 +177,6 @@
 				PRM_ACCEPT AS PROACCEPT 
 		FROM PRM 
 		WHERE PRM_PROCODE = #{proCode}
+		
 	</select>-->
 </mapper>
