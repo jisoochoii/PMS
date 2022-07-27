@@ -1,10 +1,17 @@
 package com.pms.services;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.mail.internet.MailDateFormat;
 import javax.mail.internet.MimeMessage;
 
@@ -53,6 +60,9 @@ public class Project implements ServicesRule {
 				case 2:
 					this.moveJobs(mav);
 					break;
+				case 3:
+					this.moveMemberMgr(mav);
+					break;
 				default:
 				}
 			} else {
@@ -79,7 +89,52 @@ public class Project implements ServicesRule {
 			e.printStackTrace();
 		}
 	}
+	// memberMgr 화면 이동
+	private void moveMemberMgr(ModelAndView mav) { //mav proBean 도착
+		System.out.println(((ProBean)mav.getModel().get("proBean")).getProCode());
+		ProBean pro = ((ProBean)mav.getModel().get("proBean"));
+		
+		// 1번박스 초대보냈던 리스트
 
+	    mav.addObject("sendlist",this.sendListInfo(this.session.selectList("getSendEmailList", pro)));
+		// 2번박스 그외 초대가능한 새로운 멤버리스트
+		
+		// 3번박스 -> newProject.jsp에서 moveDiv참조 여기선x
+		mav.setViewName("memberMgr");
+	}
+	// 1번박스 초대보냈던 리스트 생성
+	private String sendListInfo(List<MemberMgrB> list) {
+		StringBuffer sb = new StringBuffer();
+		//"<div class=\"items name\">발송인</div><div class=\"items invite\">초대일자</div><div class=\"items expire\">만료일자</div><div class=\"items accept\">회신</div>");
+		
+		System.out.println(list.size());
+		for(MemberMgrB mb: list) {
+			
+			try {
+				if(!((CerB) this.pu.getAttribute("accessInfo")).getPmbCode().equals(mb.getPmbCode())) {
+				mb.setPmbName(this.enc.aesDecode(mb.getPmbName(), mb.getPmbCode()));
+				mb.setPmbEmail(this.enc.aesDecode(mb.getPmbEmail(), mb.getPmbCode()));
+				int idx = 0;
+				sb.append("<div name='seList' className='box multi' value='"+ mb.getPmbCode() +":"+mb.getPmbEmail()+"'>");
+				sb.append("<span class='small' name='smailList'>"+ mb.getPmbClassName() +"</span><br/>");
+			    sb.append("<span class='general'>"+ mb.getPmbName() +"["+mb.getPmbLevelName() +"]</span>");
+				sb.append("</div>");
+			    idx ++;
+				}
+			} catch (InvalidKeyException | UnsupportedEncodingException | NoSuchAlgorithmException
+					| NoSuchPaddingException | InvalidAlgorithmParameterException | IllegalBlockSizeException
+					| BadPaddingException e) {e.printStackTrace();			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+				//sb.append("<div name='seList' className='box multi' value='"+ list.get(idx).getPmbCode() +":"+list.get(idx).getPmbEmail()+"'>");
+				//sb.append("<span class='small' name='smailList'>"+ list.get(idx).getPmbClassName() +"</span><br/>");
+				//sb.append("<span class='general'>"+ list.get(idx).getPmbName() +"["+list.get(idx).getPmbLevelName() +"]</span>");
+			
+		}
+		System.out.println(sb);
+		return sb.toString();
+	}
 	// jobs 화면 이동
 	private void moveJobs(ModelAndView mav) {
 		System.out.println(((ProBean)mav.getModel().get("proBean")).getProCode());

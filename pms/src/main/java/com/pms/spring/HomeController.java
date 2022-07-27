@@ -120,13 +120,12 @@ public class HomeController {
 		this.project.backController(2, mav);
 		return mav;
 	}
-	
-	// 
-		@RequestMapping(value = "/MoveJobs", method = RequestMethod.POST)
-		public ModelAndView moveJobs(HttpServletRequest req, ModelAndView mav,@ModelAttribute ProBean pro) {
-	
-			mav.addObject(pro);
-			this.project.backController(2, mav);
-			return mav;
-		}
+	// Move Member mgr 페이지 이동
+	@RequestMapping(value="/MoveMemberMgr", method= RequestMethod.POST)
+	public ModelAndView moveMemberMgr(ModelAndView mav, @ModelAttribute ProBean pro) {
+		mav.addObject(pro);
+		System.out.println(pro.getProCode());
+		this.project.backController(3, mav);
+		return mav;
+	}
 }

@@ -179,4 +179,7 @@
 		WHERE PRM_PROCODE = #{proCode}
 		
 	</select>-->
+	<select id="getSendEmailList" parameterType = "com.pms.beans.ProBean" resultType = "com.pms.beans.MemberMgrB">
+		SELECT * FROM SENDEMAILLIST WHERE PROCODE = #{proCode}
+	</select>
 </mapper>

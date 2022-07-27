@@ -65,6 +65,16 @@ function jobCtl(){
 	form.submit();
 	
 }
+function memberCtl(idx){
+	alert(idx);
+	const form = document.getElementsByName("clientData")[0];
+	form.action = "MoveMemberMgr";
+	form.method = "post";
+	let proCode = document.getElementsByClassName("proCode")[idx].value;
+	form.appendChild(createHidden("proCode", proCode));
+	
+	form.submit();
+}
 </script>
 <style>
 @import url("resources/css/common.css");
