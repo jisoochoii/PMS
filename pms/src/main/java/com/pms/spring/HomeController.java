@@ -124,7 +124,7 @@ public class HomeController {
 	@RequestMapping(value="/MoveMemberMgr", method= RequestMethod.POST)
 	public ModelAndView moveMemberMgr(ModelAndView mav, @ModelAttribute ProBean pro) {
 		mav.addObject(pro);
-		System.out.println(pro.getProCode());
+
 		this.project.backController(3, mav);
 		return mav;
 	}

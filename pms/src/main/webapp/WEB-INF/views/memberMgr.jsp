@@ -55,6 +55,9 @@ function initMemeberMgr() {
 		}
 		sendBtn.style.display = (proMembers.childNodes.length>0)? "block" : "none";
 	}
+	function resendEmail(pmbCode){
+		alert(pmbCode);
+	}
 </script>
 <style>
 @import url("resources/css/common.css");

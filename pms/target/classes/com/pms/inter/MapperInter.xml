@@ -180,6 +180,16 @@
 		
 	</select>-->
 	<select id="getSendEmailList" parameterType = "com.pms.beans.ProBean" resultType = "com.pms.beans.MemberMgrB">
-		SELECT * FROM SENDEMAILLIST WHERE PROCODE = #{proCode}
+		SELECT 	PMBCODE,
+        PMBNAME,
+        PMBEMAIL,
+        PMBACCEPT,
+        PMBCLASSNAME,
+        PMBLEVELNAME,
+        PROCODE,
+        TO_CHAR(INVITEDATE,'YYYYMMDDHH24MISS') AS INVITEDATE,
+        TO_CHAR(EXPIREDATE, 'YYYYMMDDHH24MISS') AS EXPIREDATE
+		FROM SENDEMAILLIST 
+		WHERE PROCODE= #{proCode}
 	</select>
 </mapper>

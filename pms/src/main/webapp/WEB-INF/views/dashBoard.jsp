@@ -66,7 +66,6 @@ function jobCtl(){
 	
 }
 function memberCtl(idx){
-	alert(idx);
 	const form = document.getElementsByName("clientData")[0];
 	form.action = "MoveMemberMgr";
 	form.method = "post";
