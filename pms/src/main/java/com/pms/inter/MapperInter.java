@@ -30,4 +30,7 @@ public interface MapperInter {
 	/* 내가 속한 프로젝트 정보 */
 	public List<ProBean> getProject(ProBean pro);
 	public List<MemberMgrB> getSendEmailList(ProBean pro);
+	
+	public List<MemberMgrB> isAcceptMember(ProBean pro);
+	public List<MemberMgrB> notInviteMember();
 }

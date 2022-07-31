@@ -5,27 +5,24 @@
 <head>
 <meta charset="UTF-8">
 <title>::PMS MemeberMgr::</title>
-<script src="resources/js/common.js" type=""></script>
+<script src="/resources/js/common.js" type=""></script>
 <script>
-function initMemeberMgr() {
-	alert(document.getElementsByClassName("proCode")[0].value);
-	
-	/* 이미 초대장을 보낸 멤버리스트 출력 */
-	let list = document.getElementById("sendlist");
-	
-	let seLlength = document.getElementsByName("seList").length;
-	for (idx = 0; idx < seLlength; idx++) {
-		let div = document.getElementsByName("seList")[idx];
-		div.addEventListener("dblclick", function() {
-			moveDiv(this);
-		});
-		//list.appendChild(div);
+	function initMemeberMgr() {
+		/* 이미 초대장을 보낸 멤버리스트 출력 */
+		let list = document.getElementById("sendlist");
+		
+		let seLlength = document.getElementsByName("seList").length;
+		for (idx = 0; idx < seLlength; idx++) {
+			let div = document.getElementsByName("seList")[idx];
+			div.addEventListener("dblclick", function() {
+				moveDiv(this);
+			});
+			//list.appendChild(div);
+		}
+		
 	}
-	
-}
 	function callBack(ajaxData) {
 		const memberList = JSON.parse(ajaxData);
-
 		/* 전체 멤버리스트 출력 */
 		let list = document.getElementById("sendlist");
 		for (idx = 0; idx < memberList.length; idx++) {
@@ -46,21 +43,56 @@ function initMemeberMgr() {
 		let pmbMembers = document.getElementById("list");
 		let proMembers = document.getElementById("invite");
 		let sendBtn = document.getElementById("send");
-		if(obj.className=="box multi"){
+
+		if(obj.className == "box multi"){
 			proMembers.appendChild(obj);
 			obj.className="box multi invite";
-		}else{
+		}else if(obj.className.indexOf("invite")){
 			pmbMembers.appendChild(obj);
 			obj.className="box multi";
 		}
 		sendBtn.style.display = (proMembers.childNodes.length>0)? "block" : "none";
 	}
-	function resendEmail(pmbCode){
-		alert(pmbCode);
+	
+	//apiController 메일재전송~~
+	function resendEmail(num){
+		let clientData = "";
+		const info = document.getElementsByName("seList")[num].getAttribute("value").split(":");
+		clientData += "&pmbCode=" + info[0] + "&pmbEmail=" + info[1] + "&proCode=" + info[2];
+		alert(clientData);
+
+		postAjaxJson("ReSendEmail",clientData,"sendMailResult("+num+")");
+
+	}
+	
+	// 새로 추가할 멤버들 전체 메일 보내기
+	function sendEmail2(){
+		let form = document.getElementsByName("clientData")[0];
+		form.action="newInviteMember";
+		form.method="post";
+		let proCode = document.getElementsByName("code")[0].value;
+		alert(proCode);
+		/* PROJECT CODE 가져오기 */
+		const inviteMembers = document.getElementById("invite").childNodes;
+		console.log(inviteMembers);
+		for(let idx=0; idx<inviteMembers.length; idx++){
+			const info = inviteMembers[idx].getAttribute("value").split(":");
+			form.appendChild(createHidden("proMembers["+ idx +"].pmbCode", info[0]));
+			form.appendChild(createHidden("proMembers["+ idx +"].proEmail", info[1]));
+			form.appendChild(createHidden("proCode", proCode));
+			form.appendChild(createHidden("proMembers["+ idx +"].proAccept", "ST"));
+			form.appendChild(createHidden("proMembers["+ idx +"].proPosition", ""));
+		}
+		form.submit();
+	}
+	function sendMailResult(num){
+		let resend = document.getElementsByName("resend")[num];
+		resend.setAttribute("disabled","");
+		
 	}
 </script>
 <style>
-@import url("resources/css/common.css");
+@import url("/resources/css/common.css");
 
 .pro {
 	position: relative;
@@ -120,13 +152,12 @@ function initMemeberMgr() {
 	<div id="content">
 		<div id="projectInfo" class="pro">
 			<div class="box item title">메일 보낸 멤버</div>
-			<div id="sendlist" class="pro list items">
-				${sendlist}
+			<div id="sendlist" class="pro list items">${sendList} ${stList}
 			</div>
 		</div>
 		<div id="pmbMembers" class="pro list">
 			<div class="box item title">추가로 초대 가능한 멤버</div>
-			<div id="list" class="pro list items"></div>
+			<div id="list" class="pro list items">${newList}</div>
 		</div>
 		<div id="proMembers" class="pro list">
 			<div class="box item title">추가로 초대 예정 멤버</div>

@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.pms.beans.CerB;
 import com.pms.beans.EmailCerB;
+import com.pms.beans.MemberMgrB;
 import com.pms.beans.ProBean;
 import com.pms.services.Certification;
 import com.pms.services.DashBoard;
@@ -95,6 +96,16 @@ public class HomeController {
 		System.out.println("hi");
 		return mav;
 	}
+	
+	// 프로젝트에 새로운 멤버 초대 
+	@RequestMapping(value="/newInviteMember", method= RequestMethod.POST)
+	public ModelAndView newInviteMember(HttpServletRequest req, ModelAndView mav, @ModelAttribute ProBean pro) {
+		/* Developer : 지수 */
+		mav.addObject(pro);
+		this.project.backController(4, mav);
+
+		return mav;
+	}
 
 	// 대쉬보드 페이지 이동 
 	@RequestMapping(value="/DashBoard", method= RequestMethod.POST)
@@ -112,6 +123,7 @@ public class HomeController {
 		this.dBoard.backController(1, mav);
 		return mav;    
 	}
+	
 	// Job 페이지 이동
 	@RequestMapping(value="/MoveJobs", method= RequestMethod.POST)
 	public ModelAndView moveJobs(ModelAndView mav, @ModelAttribute ProBean pro) {
@@ -120,6 +132,7 @@ public class HomeController {
 		this.project.backController(2, mav);
 		return mav;
 	}
+	
 	// Move Member mgr 페이지 이동
 	@RequestMapping(value="/MoveMemberMgr", method= RequestMethod.POST)
 	public ModelAndView moveMemberMgr(ModelAndView mav, @ModelAttribute ProBean pro) {

@@ -80,8 +80,8 @@
 	</update>
 	<insert id="insAuthLog" parameterType="com.pms.beans.CerLogB">
 		INSERT INTO
-		AUL(AUL_SPMBCODE,AUL_RPMBCODE,AUL_INVITEDATE,AUL_EXPIRE,AUL_AUTHRESULT)
-		VALUES(#{spmbCode}, #{rpmbCode}, default, default, #{authResult})
+		AUL(AUL_PROCODE,AUL_SPMBCODE,AUL_RPMBCODE,AUL_INVITEDATE,AUL_EXPIRE,AUL_AUTHRESULT)
+		VALUES(#{proCode},#{spmbCode}, #{rpmbCode}, default, default, #{authResult})
 	</insert>
 	<select id="checkInvite" parameterType="com.pms.beans.CerLogB"
 		resultType="com.pms.beans.CerLogB">
@@ -103,12 +103,6 @@
 		WHERE RPMBCODE = #{pmbCode} AND INVITEDATE >= (SYSDATE - 1)
 		]]>
 	</select>
-	<update id="updAulState" parameterType="com.pms.beans.CerLogB">
-		<![CDATA[
-		UPDATE AUL SET AUL_AUTHRESULT=#{authResult} 
-		WHERE AUL_SPMBCODE =#{spmbCode} AND AUL_RPMBCODE=#{rpmbCode} AND AUL_INVITEDATE = TO_DATE(#{inviteDate},'YYMMDDHH24MISS')
-		]]>
-	</update>
 	<select id="sendInvitationInfo"
 		parameterType="com.pms.beans.CerB" resultType="com.pms.beans.CerLogB">
 	<![CDATA[
@@ -164,7 +158,27 @@
 		SELECT COUNT(*) AS PEOPLE FROM PRM WHERE PRM_PROCODE = #{proCode} AND PRM_ACCEPT = 'AC'
 		]]>
 	</select>
-	
+	<select id="isAcceptMember" parameterType = "com.pms.beans.ProBean" resultType = "com.pms.beans.MemberMgrB">
+		<foreach item="memberInfo" collection="proMembers"
+		separator=" ">
+			SELECT * FROM SENDLIST WHERE PROCODE = #{proCode} AND PROACCEPT = #{memberInfo.proAccept}
+		</foreach>
+	</select>
+	<select id="notInviteMember" parameterType = "com.pms.beans.ProBean" resultType = "com.pms.beans.MemberMgrB">
+		SELECT PMB_CODE AS PMBCODE,
+       		   PMB_NAME AS PMBNAME,
+     		   PMB_EMAIL AS PMBEMAIL
+		FROM PMB WHERE PMB_CODE NOT IN(SELECT PRM_PMBCODE FROM PRM WHERE PRM_PROCODE = #{proCode})
+	</select>
+	<select id="getSendList" parameterType = "com.pms.beans.ProBean" resultType = "com.pms.beans.MemberMgrB">
+		SELECT * FROM INVITEDMEMBER
+		WHERE PROCODE = #{proCode}
+	</select>
+	<select id="getExpireSendList" parameterType = "com.pms.beans.ProBean" resultType = "com.pms.beans.MemberMgrB">
+		SELECT PROCODE, PMBCODE, PMBNAME, PMBEMAIL, TO_CHAR(EXPIREDMEMBER.INVITEDATE,'YYYYMMDDHH24MISS') AS INVITEDATE, TO_CHAR(EXPIREDMEMBER.EXPIREDATE,'YYYYMMDDHH24MISS') AS EXPIREDATE  
+		FROM EXPIREDMEMBER WHERE PROCODE = #{proCode}
+	</select>
+
 		<!-- 연관 테이블의 Collection 개체 가져오기  
 	<select id="getProject" parameterType="com.pms.beans.CerB" resultMap="getProjectInfo">
 		SELECT * 
@@ -177,19 +191,5 @@
 				PRM_ACCEPT AS PROACCEPT 
 		FROM PRM 
 		WHERE PRM_PROCODE = #{proCode}
-		
 	</select>-->
-	<select id="getSendEmailList" parameterType = "com.pms.beans.ProBean" resultType = "com.pms.beans.MemberMgrB">
-		SELECT 	PMBCODE,
-        PMBNAME,
-        PMBEMAIL,
-        PMBACCEPT,
-        PMBCLASSNAME,
-        PMBLEVELNAME,
-        PROCODE,
-        TO_CHAR(INVITEDATE,'YYYYMMDDHH24MISS') AS INVITEDATE,
-        TO_CHAR(EXPIREDATE, 'YYYYMMDDHH24MISS') AS EXPIREDATE
-		FROM SENDEMAILLIST 
-		WHERE PROCODE= #{proCode}
-	</select>
 </mapper>

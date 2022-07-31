@@ -20,7 +20,6 @@ function initJobs(){
 .pro.list	{margin-left:2.1%;overflow-x:hidden;overflow-y:auto;}
 .pro.list.items	{border:0px; width:90%; height:100%;margin-left:0;}
 .pro.invite.items	{border:0px; width:100%; height:70%;margin-left:0;}
-
 </style>
 </head>
 <body onLoad="initJobs()" >

@@ -51,20 +51,23 @@ function sendServer(){
 	
 	form.submit();
 }
+
 function cancelSend(){
 	// lightBox  Remove
 	cancelProject();
 }
+
 function jobCtl(){
 	const form = document.getElementsByName("clientData")[0];
 	form.action = "MoveJobs";
 	form.method = "post";
-	let proCode = document.getElementsByClassName("proCode")[0].value;
+	let proCode = document.getElementsByClassName("proCode")[idx].value;
 	form.appendChild(createHidden("proCode", proCode));
 	
 	form.submit();
 	
 }
+
 function memberCtl(idx){
 	const form = document.getElementsByName("clientData")[0];
 	form.action = "MoveMemberMgr";
