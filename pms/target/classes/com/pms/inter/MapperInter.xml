@@ -280,12 +280,12 @@
 			   MCA_CODE AS MCCODE
 		FROM MCA
 	</select>
-	<select id="getProName" parameterType = "java.util.HashMap" resultType="String">
+	<select id="getProName" parameterType = "java.util.HashMap" resultType="string">
 		SELECT PRO_NAME
 		FROM PRO
 		WHERE PRO_CODE = #{proCode}
 	</select>
-	<select id="getProInfo" parameterType = "java.util.HashMap" resultType = "com.pms.beans.ResultMgrB">
+	<select id="getProInfo" parameterType = "java.util.HashMap" resultType = "com.pms.beans.ProgressMgrB">
 		SELECT PRO.PRO_NAME AS PRONAME,
 	       PRM.PRM_POSITION AS PRMPOSITION,
 	       PRM.PRM_PMBCODE AS PMBCODE,
@@ -295,6 +295,22 @@
 		FROM PRM INNER JOIN PRO ON PRO.PRO_CODE = PRM.PRM_PROCODE
 		         INNER JOIN PMB ON PMB_CODE = PRM.PRM_PMBCODE
 		WHERE PRO_CODE = #{proCode}
+	</select>
+	<select id="getModuleNum" parameterType = "java.util.HashMap" resultType = "string">
+		SELECT COUNT(*)
+		FROM MOU WHERE MOU_PROCODE = ${proCode}
+	</select>
+	<select id="getJobsNum" parameterType = "java.util.HashMap" resultType = "string">
+		SELECT COUNT(*)
+		FROM JOS WHERE JOS_PROCODE = ${proCode}
+	</select>
+	<select id="getModuleJobsNum" parameterType = "java.util.HashMap" resultType = "string">
+		SELECT COUNT(*)
+		FROM MJ WHERE MJ_PROCODE = ${proCode}
+	</select>
+	<select id="getMethodNum" parameterType = "java.util.HashMap" resultType = "string">
+		SELECT COUNT(*)
+		FROM MET WHERE MET_MJPROCODE = ${proCode}
 	</select>
 	<!-- <resultMap type="com.pms.beans.ProBean" id="getProjectInfo">
 		<id property="proCode" column="PRO_CODE"/>

@@ -3,7 +3,7 @@ package com.pms.beans;
 import lombok.Data;
 
 @Data
-public class ResultMgrB {
+public class ProgressMgrB {
 	private String proCode;
 	private String proName;
 	private String prmPosition;

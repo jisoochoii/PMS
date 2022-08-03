@@ -68,7 +68,7 @@ public class Project implements ServicesRule {
 					this.newInviteMember(mav);
 					break;
 				case 5:
-					this.moveResultMgr(mav);
+					this.moveProgressMgr(mav);
 					break;
 				default:
 				}
@@ -80,17 +80,25 @@ public class Project implements ServicesRule {
 		}
 	}
 
-	private void moveResultMgr(ModelAndView mav) {
-		ResultMgrB rb = (ResultMgrB) mav.getModel().get("resultMgrB");
+	private void moveProgressMgr(ModelAndView mav) {
+		ProgressMgrB pb = (ProgressMgrB) mav.getModel().get("progressMgrB");
 		HashMap<String,String> map = new HashMap<String,String>();
-		map.put("proCode", rb.getProCode());
+		map.put("proCode", pb.getProCode());
 		
 		//프로젝트이름 보내주기
 		mav.addObject("proName", this.session.selectOne("getProName",map));
 		//프로젝트 팀장,팀원,날짜 보내주기
 		mav.addObject("proInfo", this.makeProInfo(this.session.selectList("getProInfo",map)));
-		mav.setViewName("result");
+		mav.setViewName("progress");
 		
+		//모듈갯수 가져오기
+		mav.addObject("moduleNum",this.session.selectOne("getModuleNum",map));
+		//잡갯수 가져오기
+		mav.addObject("jobsNum",this.session.selectOne("getJobsNum",map));
+		//모듈앤잡갯수 가져오기
+		mav.addObject("mjNum",this.session.selectOne("getModuleJobsNum",map));
+		//메서드갯수 가져오기
+		mav.addObject("methodNum",this.session.selectOne("getMethodNum",map));
 	}
 
 	private void newInviteMember(ModelAndView mav) {
@@ -853,7 +861,7 @@ public class Project implements ServicesRule {
 		return number == 0 ? false : true;
 	}
 	
-	private String makeProInfo(List<ResultMgrB> list) {
+	private String makeProInfo(List<ProgressMgrB> list) {
 		StringBuffer sb = new StringBuffer();
 		String TeamLeader = "";
 		String TeamMember = "";

@@ -15,7 +15,7 @@ import com.pms.beans.EmailCerB;
 import com.pms.beans.MemberMgrB;
 import com.pms.beans.ModuleB;
 import com.pms.beans.ProBean;
-import com.pms.beans.ResultMgrB;
+import com.pms.beans.ProgressMgrB;
 import com.pms.services.Certification;
 import com.pms.services.DashBoard;
 import com.pms.services.Project;
@@ -144,8 +144,8 @@ public class HomeController {
 	}
 	
 	// Move Result mgr 페이지 이동
-	@RequestMapping(value="/MoveResultMgr", method= RequestMethod.POST)
-	public ModelAndView moveResultMgr(ModelAndView mav, @ModelAttribute ResultMgrB rb) {
+	@RequestMapping(value="/MoveProgressMgr", method= RequestMethod.POST)
+	public ModelAndView moveProgressMgr(ModelAndView mav, @ModelAttribute ProgressMgrB rb) {
 		mav.addObject(rb);
 
 		this.project.backController(5, mav);

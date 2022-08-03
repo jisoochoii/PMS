@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -210,22 +212,20 @@ span.general{font-size:1.1rem;}
                 <!-- 프로젝트 상단창 -->
                 <div id = "1" class="1" style="top: 0; height: 30%; width: 95%; margin: 0 auto;">  
                     <div id = "2" class="1" style="top: 0; background-color: pink; height: 19%; width: 100%; margin: 0 auto;">
-                        <div id = "3" class="1"> 프로젝트명</div>
+                        <div id = "3" class="1"> ${proName}</div>
                     </div>
                     <div style="bottom: 0; height: 80%; width: 100%; margin: 0 auto;">
                         <div id = "4" class="1" style="display: flex; justify-content: center; background-color: lightblue; float: left; height: 100%; width: 31%; margin: 0 auto;">
                             <div id = "5" class="1" style="display: flex; flex-direction: column; justify-content: space-around;">
-                                <div>팀장</div>
-                                <div>팀원</div>
-                                <div>기간</div>
+                                ${proInfo}
                             </div>
                         </div>
                         <div id = "6" class="1" style="float: right; height: 80%; width: 68%; margin: 0 auto;">
                             <div id = "7" class="1" style="display: flex; justify-content: space-evenly; align-items: center; background-color: lightgray; height: 75%;"> 
-                                <div>MOU</div>
-                                <div>JOS</div>
-                                <div>MJ</div>
-                                <div>MET</div>
+                                <div>${moduleNum} MOU</div>
+                                <div>${jobsNum} JOS</div>
+                                <div>${mjNum} MJ</div>
+                                <div>${methodNum} MET</div>
                             </div>
                             <div id = "8" class="1" style="background-color: lightyellow; height: 50%;"> 프로젝트 진행률</div>
                         </div>
@@ -235,22 +235,60 @@ span.general{font-size:1.1rem;}
                 <div id = "9" class="1" style="bottom: 0; height: 65%; width: 95%; margin: 0 auto;">
                     <div id = "10" class="1" style="background-color: lightblue; float: left; height: 100%; width: 31%; margin: 0 auto;"> 
                         <div id = "11" class="1" style="display: flex; flex-direction: column; justify-content: space-evenly; align-items: center; height: 100%;">
+                            <div>ACTION</div>
+                            <div>ACTION</div>
+                            <div>ACTION</div>
+                            <div>ACTION</div>
+                            <div>ACTION</div>
+                            <div>ACTION</div>
+                            <div>ACTION</div>
+                            <div>ACTION</div>
+                            <div>ACTION</div>
+                            <div>ACTION</div>
                         </div>
                     </div>
                     <div id = "12" class="1" style="float: right; height: 100%; width: 68%; margin: 0 auto;">
                         <div id = "13" class="1" style="background-color: lightskyblue; float: left; height: 100%; width: 31%; margin: 0 auto;"> 
                             <div id = "14" class="1" style="display: flex; flex-direction: column; justify-content: space-evenly; align-items: center; height: 100%;">
+                                <div>컨트롤러</div>
+                                <div>뷰</div>
+                                <div>모델</div>
+                                <div>디에이오</div>
                             </div>
                         </div>
                         <div style="float: right; height: 100%; width: 68%;">
                             <div id = "15" class="1" style="background-color: lightgray; height: 32%; width: 100%; margin: 0 auto;"> 
                                 <div id = "16" class="1"style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: space-evenly; align-content: space-around; align-items: center; height: 100%; text-align: center;">
+                                    <div style="width: 25%;">메소드</div>
+                                    <div style="width: 25%;">메소드</div>
+                                    <div style="width: 25%;">메소드</div>
+                                    <div style="width: 25%;">메소드</div>
+                                    <div style="width: 25%;">메소드</div>
+                                    <div style="width: 25%;">메소드</div>
+                                    <div style="width: 25%;">메소드</div>
+                                    <div style="width: 25%;">메소드</div>
+                                    <div style="width: 25%;">메소드</div>
+                                    <div style="width: 25%;">메소드</div>
+                                    <div style="width: 25%;">메소드</div>
+                                    <div style="width: 25%;">메소드</div>
                                 </div>
                             </div>
                             <div id = "17" class="1" style="background-color: lightyellow; height: 68%; width: 100%; margin: 0 auto;">
                                 <div style="float: left; width: 65%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly;">
+                                    <input type="file" value="파일찾기" style="width: 80%; background-color: purple; color: white; border: none;">
+                                    <input type="file" value="파일찾기" style="width: 80%; background-color: purple; color: white; border: none;">
+                                    <input type="file" value="파일찾기" style="width: 80%; background-color: purple; color: white; border: none;">
                                 </div>
                                 <div style="display: flex; flex-direction: column; justify-content: space-around; float: right; width: 25%; height: 100%;">
+                                    <div style="display: flex; flex-direction: column; justify-content: space-around; height: 65%;">
+                                        <input type="button" value="파일추가" style="background-color: purple; color: white; border: none;">
+                                        <input type="button" value="항목삭제" style="background-color: purple; color: white; border: none;">
+                                        <input type="button" value="파일등록" style="background-color: purple; color: white; border: none;">
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; justify-content: space-around; height: 35%;">
+                                        <input type="button" value="작업완료" style="background-color: black; color: white; border: none;">
+                                        <input type="button" value="작업시작" style="background-color: black; color: white; border: none;">
+                                    </div>
                                 </div>
                             </div>
                         </div>

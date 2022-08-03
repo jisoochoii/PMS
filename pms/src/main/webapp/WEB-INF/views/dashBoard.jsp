@@ -78,9 +78,9 @@ function memberCtl(idx){
 	form.submit();
 }
 
-function resultCtl(){
+function progressCtl(){
 	const form = document.getElementsByName("clientData")[0];
-	form.action = "MoveResultMgr";
+	form.action = "MoveProgressMgr";
 	form.method = "post";
 	let proCode = document.getElementsByClassName("proCode")[0].value;
 	form.appendChild(createHidden("proCode", proCode));
