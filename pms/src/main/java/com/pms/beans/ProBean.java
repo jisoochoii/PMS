@@ -13,4 +13,5 @@ public class ProBean {
 	private String proEnd;
 	private String proVisible;
 	private List<ProMemberB> proMembers;
+	
 }
