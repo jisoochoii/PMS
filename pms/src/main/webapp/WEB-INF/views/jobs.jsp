@@ -9,6 +9,7 @@
 <script>
 
 function initJobs(){ 
+	alert("${ModuleList}");
 /* 	
 	const lightBox = makeLightBox("", "confirm", "cancel");
 	document.body.appendChild(lightBox);

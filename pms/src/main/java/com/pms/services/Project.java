@@ -457,8 +457,7 @@ public class Project implements ServicesRule {
 		HashMap<String,String> map = new HashMap<String,String>();
 		map.put("proCode", ((ModuleB) mav.getModel().get("moduleB")).getProCode());
 		ModuleB module = (ModuleB) mav.getModel().get("moduleB");
-		System.out.println(map);
-		System.out.println(this.session.selectList("getModuleList", module));
+		
 		/* ModuleList */
 		mav.addObject("ModuleList", this.test(this.session.selectList("getModuleList", map), 1));
 		//mav.addObject("updMouList", this.makeUpdSelect(this.session.selectList("getModuleList", map),1));
@@ -582,11 +581,11 @@ public class Project implements ServicesRule {
 
 	private String test(List<ModuleB> list , int num) {
 		StringBuffer sb = new StringBuffer();
-		// 배열....이용....몰라....지송....스위치 쵝오
-			
+		
 		switch(num) {
 		
 		case 1 :
+			System.out.println("여기는 오니?");
 			int idx = 0;
 			for(ModuleB mb : list) {
 				sb.append("<div class = 'ModuleList' >");
@@ -597,9 +596,10 @@ public class Project implements ServicesRule {
 					sb.append("<div>MOUCOMMENTS = " + ((mb.getMouComments() == null)? "none" : mb.getMouComments()) + "</div>");
 					sb.append("<input type='button' class='box' value='수정' onclick=\"updModule(\'"+ mb.getProCode() +":"+ mb.getMouCode() +":"+ mb.getMouName() +":"+ mb.getMouComments()+"\')\"/>");
 					sb.append("<input type='button' class='box' value='삭제' onclick=\"delModule(\'"+ mb.getProCode() +':'+ mb.getMouCode() +":" +"\')\"/>");
-}
+				}
 				sb.append("</div>");
 			}
+			System.out.println(sb);
 			break;
 			
 		case 2 : 
@@ -666,7 +666,6 @@ public class Project implements ServicesRule {
 			
 		default : 
 		}
-		
 		return sb.toString();
 	}
 	
@@ -853,4 +852,48 @@ public class Project implements ServicesRule {
 		return number == 0 ? false : true;
 	}
 
+/*	private String makeProInfo(List<ProBean> list) {
+		StringBuffer sb = new StringBuffer();
+		
+		for(ProBean pb : list) {
+			if(pb.getProMembers().get(0).getProPosition() == "MG") {
+			sb.append("<div class='proInfo'> 프로젝트 팀장 : "+ pb.getProMembers().get(0).getPmbCode()+"</div>");
+			}else {
+				sb.append("");
+			}
+		}
+		sb.append("<div> 프로젝트 팀원 : ");
+		for(ProBean pb : list) {
+			if(pb.getProMembers().get(0).getProPosition() != "MG") {
+			sb.append(pb.getProMembers().get(0).getPmbCode() + " ");
+			}
+		}
+		sb.append("</div>");
+		///////////////////////////////////////////
+		String TeamMember = null;
+		sb.append("<div class='proInfo'>"+ list.get(0).getProName()+"</div>");
+		for(int idx=0;idx<list.size();idx++) {
+			if(list.get(idx).getProMembers().get(idx).getPmbCode() == "MG") {
+				sb.append("<div class='proInfo'> 프로젝트 팀장 : "+ list.get(idx).getProMembers().get(idx).getPmbCode() +"</div>");
+				
+			}else {
+				TeamMember += list.get(idx).getProMembers().get(idx).getPmbCode();
+				if(list.size() != idx) {
+					TeamMember += " ";
+				}
+			}
+			sb.append("<div class='proInfo'> 프로젝트 팀원 : "+TeamMember+"</div>");
+		}sb.append(list.get(0).getProStart()+"~"+list.get(0).getProEnd());
+		
+		
+		
+		return sb.toString();
+		
+		/* 이제 상단에서 mav.addAttribute("jsp에서 ${}안에 넣을 이름",this.makeProInfo("xml이름",bean))
+		 * 
+		 * mav.addAttribute("proName",)
+		 * mav.addAttribute("proInfo", this.makeProInfo("xml이름", map(키값 proCode하고 키값 position = 'MG')+this.makeProInfo("xml이름", map(키값 proCode하고 키값 position = 'MB')))
+		 
+	}*/
+	
 }
