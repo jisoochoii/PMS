@@ -67,6 +67,9 @@ public class Project implements ServicesRule {
 				case 4:
 					this.newInviteMember(mav);
 					break;
+				case 5:
+					this.moveResultMgr(mav);
+					break;
 				default:
 				}
 			} else {
@@ -75,6 +78,19 @@ public class Project implements ServicesRule {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void moveResultMgr(ModelAndView mav) {
+		ResultMgrB rb = (ResultMgrB) mav.getModel().get("resultMgrB");
+		HashMap<String,String> map = new HashMap<String,String>();
+		map.put("proCode", rb.getProCode());
+		
+		//프로젝트이름 보내주기
+		mav.addObject("proName", this.session.selectOne("getProName",map));
+		//프로젝트 팀장,팀원,날짜 보내주기
+		mav.addObject("proInfo", this.makeProInfo(this.session.selectList("getProInfo",map)));
+		mav.setViewName("result");
+		
 	}
 
 	private void newInviteMember(ModelAndView mav) {
@@ -173,21 +189,6 @@ public class Project implements ServicesRule {
 		}
 	}
 	
-	private void makeNewList(Model model) {
-		HashMap<String,String> map = new HashMap<String,String>();
-		ModuleB module = (ModuleB) model.getAttribute("moduleB");
-		map.put("proCode", module.getProCode());
-		
-		/* ModuleList */
-		model.addAttribute("NewModuleList", this.test(this.session.selectList("getModuleList", map), 1));
-		/* JobList */
-		model.addAttribute("NewJobList", this.test(this.session.selectList("getJobsList", map), 2));
-		/* ModuleJobList */
-		model.addAttribute("NewModuleJobList", this.test(this.session.selectList("getMJList", map), 3));
-		/* MethodList */
-		model.addAttribute("NewMethodList", this.test(this.session.selectList("getMethodList", map), 4));
-		
-	}
 
 	private void updMethod(Model model) {
 		HashMap<String,String> map = new HashMap<String,String>();
@@ -851,49 +852,43 @@ public class Project implements ServicesRule {
 	private boolean convertToBoolean(int number) {
 		return number == 0 ? false : true;
 	}
-
-/*	private String makeProInfo(List<ProBean> list) {
-		StringBuffer sb = new StringBuffer();
-		
-		for(ProBean pb : list) {
-			if(pb.getProMembers().get(0).getProPosition() == "MG") {
-			sb.append("<div class='proInfo'> 프로젝트 팀장 : "+ pb.getProMembers().get(0).getPmbCode()+"</div>");
-			}else {
-				sb.append("");
-			}
-		}
-		sb.append("<div> 프로젝트 팀원 : ");
-		for(ProBean pb : list) {
-			if(pb.getProMembers().get(0).getProPosition() != "MG") {
-			sb.append(pb.getProMembers().get(0).getPmbCode() + " ");
-			}
-		}
-		sb.append("</div>");
-		///////////////////////////////////////////
-		String TeamMember = null;
-		sb.append("<div class='proInfo'>"+ list.get(0).getProName()+"</div>");
-		for(int idx=0;idx<list.size();idx++) {
-			if(list.get(idx).getProMembers().get(idx).getPmbCode() == "MG") {
-				sb.append("<div class='proInfo'> 프로젝트 팀장 : "+ list.get(idx).getProMembers().get(idx).getPmbCode() +"</div>");
-				
-			}else {
-				TeamMember += list.get(idx).getProMembers().get(idx).getPmbCode();
-				if(list.size() != idx) {
-					TeamMember += " ";
-				}
-			}
-			sb.append("<div class='proInfo'> 프로젝트 팀원 : "+TeamMember+"</div>");
-		}sb.append(list.get(0).getProStart()+"~"+list.get(0).getProEnd());
-		
-		
-		
-		return sb.toString();
-		
-		/* 이제 상단에서 mav.addAttribute("jsp에서 ${}안에 넣을 이름",this.makeProInfo("xml이름",bean))
-		 * 
-		 * mav.addAttribute("proName",)
-		 * mav.addAttribute("proInfo", this.makeProInfo("xml이름", map(키값 proCode하고 키값 position = 'MG')+this.makeProInfo("xml이름", map(키값 proCode하고 키값 position = 'MB')))
-		 
-	}*/
 	
-}
+	private String makeProInfo(List<ResultMgrB> list) {
+		StringBuffer sb = new StringBuffer();
+		String TeamLeader = "";
+		String TeamMember = "";
+		
+
+				//팀장만 TeamLeader에 set
+				try {
+					for(int idx=0;idx<list.size();idx++) {
+					if(list.get(idx).getPrmPosition().equals("MG")) {
+						TeamLeader += this.enc.aesDecode(list.get(idx).getPmbName(),list.get(idx).getPmbCode());
+						if(list.size() != idx-1) { //마지막만빼고 이름 사이사이에 공백 넣어주기
+							TeamLeader += " ";
+						
+							}
+						}else {
+							//팀원만 TeamMember에 set
+							TeamMember += this.enc.aesDecode(list.get(idx).getPmbName(),list.get(idx).getPmbCode());
+							if(list.size() != idx-1) {
+								TeamMember += " ";
+							}
+						}
+					}
+				} catch (InvalidKeyException | UnsupportedEncodingException | NoSuchAlgorithmException
+						| NoSuchPaddingException | InvalidAlgorithmParameterException | IllegalBlockSizeException
+						| BadPaddingException e) {
+					e.printStackTrace();
+				}
+				sb.append("<div class='proInfo'> 프로젝트 팀장 : "+TeamLeader+"</div>");
+				sb.append("<div class='proInfo'> 프로젝트 팀원 : "+TeamMember+"</div>");
+				sb.append("<div class='proInfo'> 프로젝트 기간 : "+list.get(0).getProStart()+"~"+list.get(0).getProEnd()+"</div>");
+				
+				return sb.toString();
+		}
+
+		
+		
+	}
+	

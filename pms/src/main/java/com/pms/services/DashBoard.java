@@ -221,7 +221,7 @@ public class DashBoard implements ServicesRule {
 					sb.append("<input type = 'button' class = 'exec progress' value = '프로젝트진행현황' onClick = '' />");
 					sb.append("<input type = 'button' class = 'exec member' value = '멤버관리' onClick = 'window.memberCtl("+idx+")' />");
 					sb.append("<input type = 'button' class = 'exec job' value = '업무관리' onClick = 'window.jobCtl()' />");
-					sb.append("<input type = 'button' class = 'exec result' value = '결과관리' onClick = '' />");
+					sb.append("<input type = 'button' class = 'exec result' value = '결과관리' onClick = 'window.resultCtl()' />");
 					sb.append("</div>");
 					sb.append("</div>");
 					sb.append("</div>");

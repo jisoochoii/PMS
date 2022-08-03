@@ -77,6 +77,16 @@ function memberCtl(idx){
 	
 	form.submit();
 }
+
+function resultCtl(){
+	const form = document.getElementsByName("clientData")[0];
+	form.action = "MoveResultMgr";
+	form.method = "post";
+	let proCode = document.getElementsByClassName("proCode")[0].value;
+	form.appendChild(createHidden("proCode", proCode));
+	
+	form.submit();
+}
 </script>
 <style>
 @import url("resources/css/common.css");

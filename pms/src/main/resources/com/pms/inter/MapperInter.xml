@@ -280,6 +280,22 @@
 			   MCA_CODE AS MCCODE
 		FROM MCA
 	</select>
+	<select id="getProName" parameterType = "java.util.HashMap" resultType="String">
+		SELECT PRO_NAME
+		FROM PRO
+		WHERE PRO_CODE = #{proCode}
+	</select>
+	<select id="getProInfo" parameterType = "java.util.HashMap" resultType = "com.pms.beans.ResultMgrB">
+		SELECT PRO.PRO_NAME AS PRONAME,
+	       PRM.PRM_POSITION AS PRMPOSITION,
+	       PRM.PRM_PMBCODE AS PMBCODE,
+	       PMB.PMB_NAME AS PMBNAME,
+	       TO_CHAR(PRO.PRO_START, 'YYYY.MM.DD') AS PROSTART,
+	       TO_CHAR(PRO.PRO_END, 'YYYY.MM.DD') AS PROEND
+		FROM PRM INNER JOIN PRO ON PRO.PRO_CODE = PRM.PRM_PROCODE
+		         INNER JOIN PMB ON PMB_CODE = PRM.PRM_PMBCODE
+		WHERE PRO_CODE = #{proCode}
+	</select>
 	<!-- <resultMap type="com.pms.beans.ProBean" id="getProjectInfo">
 		<id property="proCode" column="PRO_CODE"/>
 		<result property="proName" column="PRO_NAME"/>
