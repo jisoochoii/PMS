@@ -141,7 +141,7 @@ public class Project implements ServicesRule {
 			map.put("proCode",this.session.selectOne("getRecentProject",map));
 		}
 		
-		sb.append("<select name='projectName' class='selectBox'>");
+		sb.append("<select id='projectName' onchange='changePJ()' class='selectBox'>  ");
 		if(selectList != null && selectList.size() > 0) {
 			for(ProgressMgrB pb : selectList) {
 				if(pb.getProCode().equals(map.get("proCode"))) {
@@ -651,7 +651,7 @@ public class Project implements ServicesRule {
 		switch(num) {
 		
 		case 1 :
-			System.out.println("여기는 오니?");
+
 			int idx = 0;
 			for(ModuleB mb : list) {
 				sb.append("<div class = 'ModuleList' >");
@@ -665,7 +665,7 @@ public class Project implements ServicesRule {
 				}
 				sb.append("</div>");
 			}
-			System.out.println(sb);
+
 			break;
 			
 		case 2 : 
@@ -924,11 +924,12 @@ public class Project implements ServicesRule {
 		String TeamMember = "";
 		System.out.println(list);
 
-				//팀장만 TeamLeader에 set
+				
 				try {
 					for(int idx=0;idx<list.size();idx++) {
 						System.out.println("position은? "+list.get(idx).getPrmPosition());
 					if(list.get(idx).getPrmPosition().equals("MG")) {
+						//팀장만 TeamLeader에 set
 						TeamLeader += this.enc.aesDecode(list.get(idx).getPmbName(),list.get(idx).getPmbCode());
 						if(list.size() != idx-1) { //마지막만빼고 이름 사이사이에 공백 넣어주기
 							TeamLeader += " ";

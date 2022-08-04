@@ -5,10 +5,23 @@
 <head>
 <meta charset="UTF-8">
 <title>::PMS Jobs::</title>
-<!-- <script src="resources/js/common.js" type=""></script> -->
+<script src="resources/js/common.js" type=""></script>
 <script>
 function initJobs(){
 	alert("Jobs");
+}
+function changePJ(){
+	let proCode = document.getElementById("projectName").value;
+	mgrResult(proCode);
+}
+function mgrResult(proCode){
+	const form = document.getElementsByName("clientData")[0];
+	form.action = "MoveResultMgr";
+	form.method = "post";
+	alert(proCode);
+	form.appendChild(createHidden("proCode", proCode));
+
+	form.submit();
 }
 </script>
 <style>
