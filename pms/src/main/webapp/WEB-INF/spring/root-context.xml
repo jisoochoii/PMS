@@ -18,9 +18,9 @@
 		<property name="driverClassName"
 			value="oracle.jdbc.driver.OracleDriver"></property>
 		<property name="jdbcUrl"
-			value="jdbc:oracle:thin:@192.168.219.102:1521:xe"></property>
-		<property name="username" value="CJS"></property>
-		<property name="password" value="1234"></property>
+			value="jdbc:oracle:thin:@192.168.0.94:1521:xe"></property>
+		<property name="username" value="TEAM4"></property>
+		<property name="password" value="4444"></property>
 	</bean>
 	
 	<!-- DBCP Using >> DataSource -->
@@ -48,7 +48,7 @@
 		<property name="port" value="587" ></property>
 		<!-- 아이디 비번 수정하기 -->
 		<property name="username" value="zzanggirlji@naver.com" ></property>
-		<property name="password" value="chlwltn1!" ></property>
+		<property name="password" value="Chlwltn1!" ></property>
 		<property name="defaultEncoding" value="utf-8" ></property>	
 		<property name="javaMailProperties">
 			<props>

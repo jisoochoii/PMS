@@ -68,7 +68,7 @@ public class Project implements ServicesRule {
 					this.newInviteMember(mav);
 					break;
 				case 5:
-					this.moveProgressMgr(mav);
+					this.moveResultMgr(mav);
 					break;
 				default:
 				}
@@ -80,16 +80,37 @@ public class Project implements ServicesRule {
 		}
 	}
 
-	private void moveProgressMgr(ModelAndView mav) {
+	private void moveResultMgr(ModelAndView mav) {
 		ProgressMgrB pb = (ProgressMgrB) mav.getModel().get("progressMgrB");
+		System.out.println(pb.getProCode());
 		HashMap<String,String> map = new HashMap<String,String>();
 		map.put("proCode", pb.getProCode());
 		
-		//프로젝트이름 보내주기
-		mav.addObject("proName", this.session.selectOne("getProName",map));
+		try {
+			CerB cb =  (CerB)this.pu.getAttribute("accessInfo");
+			map.put("pmbCode", cb.getPmbCode());
+			
+			//프로젝트이름 보내주기
+			mav.addObject("proName", this.makeSelectName(this.session.selectList("getProNameList", map),map));
+			
+			// MC별로 메서드 갯수 가져오기
+			map.put("mcCode", "CT");
+			mav.addObject("ctNum",this.session.selectOne("getMyMethodCount",map)+" / "+this.session.selectOne("getTotalMethodCount",map));
+			map.put("mcCode", "VI");
+			mav.addObject("viNum",this.session.selectOne("getMyMethodCount",map)+" / "+this.session.selectOne("getTotalMethodCount",map));
+			map.put("mcCode", "MO");
+			mav.addObject("moNum",this.session.selectOne("getMyMethodCount",map)+" / "+this.session.selectOne("getTotalMethodCount",map));
+			map.put("mcCode", "DA");
+			mav.addObject("daNum",this.session.selectOne("getMyMethodCount",map)+" / "+this.session.selectOne("getTotalMethodCount",map));
+			
+			// MJ NAME 가져오기
+			mav.addObject("mjName", this.makeMJList(this.session.selectList("getMJName",map)));
+
+		} catch (Exception e) {e.printStackTrace();	}
+		
 		//프로젝트 팀장,팀원,날짜 보내주기
 		mav.addObject("proInfo", this.makeProInfo(this.session.selectList("getProInfo",map)));
-		mav.setViewName("progress");
+		mav.setViewName("result");
 		
 		//모듈갯수 가져오기
 		mav.addObject("moduleNum",this.session.selectOne("getModuleNum",map));
@@ -99,6 +120,42 @@ public class Project implements ServicesRule {
 		mav.addObject("mjNum",this.session.selectOne("getModuleJobsNum",map));
 		//메서드갯수 가져오기
 		mav.addObject("methodNum",this.session.selectOne("getMethodNum",map));
+		
+
+			}
+	
+
+	private String makeMJList(List<ModuleB> selectList) {
+		StringBuffer sb = new StringBuffer();
+		for(ModuleB mb : selectList) {
+			sb.append("<div class = 'mjName' onclick='window.nextMc(\'"+mb.getProCode()+":"+mb.getMouCode()+":"+mb.getJosCode()+"\')\'>"+mb.getMjName()+"</div>");
+		}
+		
+		return sb.toString();
+	}
+
+	private String makeSelectName(List<ProgressMgrB> selectList, HashMap<String,String> map) {
+		StringBuffer sb = new StringBuffer();
+		
+		if(map.get("proCode").equals("N")) {
+			map.put("proCode",this.session.selectOne("getRecentProject",map));
+		}
+		
+		sb.append("<select name='projectName' class='selectBox'>");
+		if(selectList != null && selectList.size() > 0) {
+			for(ProgressMgrB pb : selectList) {
+				if(pb.getProCode().equals(map.get("proCode"))) {
+					sb.append("<option value='"+ pb.getProCode()+"' selected>"+pb.getProName()+ " </option>");
+				}else {
+					sb.append("<option value='"+ pb.getProCode() +"'>"+ pb.getProName() +"</option>");	
+				}
+			}
+		}else {
+			sb.append("<option disabled selected>선택하실 모듈이 없습니다</option>");
+		}
+		sb.append("</select>");
+		
+		return sb.toString();
 	}
 
 	private void newInviteMember(ModelAndView mav) {
@@ -865,18 +922,18 @@ public class Project implements ServicesRule {
 		StringBuffer sb = new StringBuffer();
 		String TeamLeader = "";
 		String TeamMember = "";
-		
+		System.out.println(list);
 
 				//팀장만 TeamLeader에 set
 				try {
 					for(int idx=0;idx<list.size();idx++) {
+						System.out.println("position은? "+list.get(idx).getPrmPosition());
 					if(list.get(idx).getPrmPosition().equals("MG")) {
 						TeamLeader += this.enc.aesDecode(list.get(idx).getPmbName(),list.get(idx).getPmbCode());
 						if(list.size() != idx-1) { //마지막만빼고 이름 사이사이에 공백 넣어주기
 							TeamLeader += " ";
-						
 							}
-						}else {
+						}else if(list.get(idx).getPrmPosition().equals("MB")){
 							//팀원만 TeamMember에 set
 							TeamMember += this.enc.aesDecode(list.get(idx).getPmbName(),list.get(idx).getPmbCode());
 							if(list.size() != idx-1) {
@@ -889,9 +946,9 @@ public class Project implements ServicesRule {
 						| BadPaddingException e) {
 					e.printStackTrace();
 				}
-				sb.append("<div class='proInfo'> 프로젝트 팀장 : "+TeamLeader+"</div>");
-				sb.append("<div class='proInfo'> 프로젝트 팀원 : "+TeamMember+"</div>");
-				sb.append("<div class='proInfo'> 프로젝트 기간 : "+list.get(0).getProStart()+"~"+list.get(0).getProEnd()+"</div>");
+				sb.append("<div class='proInfo proLeader'> 프로젝트 팀장 : "+TeamLeader+"</div>");
+				sb.append("<div class='proInfo proMember'> 프로젝트 팀원 : "+TeamMember+"</div>");
+				sb.append("<div class='proInfo proPeriod'> 프로젝트 기간 : "+list.get(0).getProStart()+"~"+list.get(0).getProEnd()+"</div>");
 				
 				return sb.toString();
 		}

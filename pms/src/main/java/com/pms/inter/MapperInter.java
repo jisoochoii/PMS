@@ -76,4 +76,11 @@ public interface MapperInter {
 	public List<ProgressMgrB> getJobsNum(HashMap<String,String> map);
 	public List<ProgressMgrB> getModuleJobsNum(HashMap<String,String> map);
 	public List<ProgressMgrB> getMethodNum(HashMap<String,String> map);
+	/* mc별로 메서드 갯수 가져오기 */
+	public String getMethodCount(HashMap<String,String> map);
+	/* 가장 최근의 프로젝트 코드 가져오기 */
+	public String getRecentProject(HashMap<String,String> map);
+	/* MJ NAME 가져오기*/
+	public List<ModuleB> getMJName(HashMap<String,String> map);
+	
 }

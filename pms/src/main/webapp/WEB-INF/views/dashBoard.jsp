@@ -78,12 +78,21 @@ function memberCtl(idx){
 	form.submit();
 }
 
-function progressCtl(){
+function resultCtl(proCode){
 	const form = document.getElementsByName("clientData")[0];
-	form.action = "MoveProgressMgr";
+	alert(proCode);
+	form.action = "MoveResultMgr";
 	form.method = "post";
-	let proCode = document.getElementsByClassName("proCode")[0].value;
 	form.appendChild(createHidden("proCode", proCode));
+	
+	form.submit();
+}
+function resultCtl2(){
+	const form = document.getElementsByName("clientData")[0];
+
+	form.action = "MoveResultMgr";
+	form.method = "post";
+	form.appendChild(createHidden("proCode", "N"));
 	
 	form.submit();
 }
@@ -113,11 +122,12 @@ function progressCtl(){
 		<div id="menues">
 			<div class="menu" onClick="moveDashBoard()">DB</div>
 			<div class="menu" onClick="">PM</div>
+			<div class="menu" onClick="resultCtl2()">RM</div>
 		</div>
 		<div id="content">
 			<div id="invitationInfo">
-				${RInvitation }
-				${SInvitation }
+				${RInvitation}
+				${SInvitation}
 			</div>
 			<div class="frame">
 				<div class="myProjects">
